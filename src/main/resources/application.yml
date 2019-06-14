@@ -42,6 +42,14 @@ spring:
       use-global-data-source-stat: true
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  #Redis
+  redis:
+    host: 192.168.190.137
+    password: haiyang
+    port: 6379
+    jedis-pool-max-active: 50
+    jedis-pool-max-idle: 50
+    jedis-pool-max-wait: 5
 mybatis:
   type-aliases-package: com.example.demo.domain.model
   configuration:
@@ -49,3 +57,4 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 3000
   mapper-locations: classpath:com/example/demo/dao/*:xml
+
