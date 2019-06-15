@@ -9,4 +9,8 @@ public class UserPrefix extends BasePrefix {
     public static UserPrefix getById = new UserPrefix(0,"id");
 
     public static UserPrefix getByName = new UserPrefix(0,"name");
+
+    public static UserPrefix setUserPrefix(String userPrefix){
+        return new UserPrefix(0,userPrefix);
+    }
 }

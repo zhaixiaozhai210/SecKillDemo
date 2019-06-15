@@ -1,9 +1,8 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
+public class UserDTO {
     /**
      *
      */
@@ -111,5 +110,13 @@ public class User implements Serializable {
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

@@ -107,6 +107,14 @@ public class RedisService {
         }
     }
 
+    /**
+     * 设置redis缓存
+     * @param keyPrefix
+     * @param key
+     * @param value
+     * @param <T>
+     * @return
+     */
     public <T> boolean set(KeyPrefix keyPrefix, String key, T value) {
         Jedis jedis = null;
         try {
@@ -117,13 +125,27 @@ public class RedisService {
             if (stringValue == null || stringValue.length() <= 0) {
                 return false;
             }
-            jedis.set(prefixKey,stringValue);
+            int seconds = keyPrefix.expireSeconds();//判断是否超过有效期
+            if (seconds <= 0) {
+                jedis.set(prefixKey, stringValue);
+            } else {
+                jedis.setex(prefixKey,seconds,stringValue);//设置了有效期 使用setex方法
+            }
+
             return true;
         } finally {
             jedis.close();
         }
     }
 
+    /**
+     * 获得redis缓存
+     * @param keyPrefix
+     * @param key
+     * @param clazz
+     * @param <T>
+     * @return
+     */
     public <T> T get(KeyPrefix keyPrefix, String key, Class<T> clazz) {
         Jedis jedis = null;
         try {
@@ -131,7 +153,7 @@ public class RedisService {
             //生成prefixKey
             String prefixKey = keyPrefix.getPrefix() + key;
             String value = jedis.get(prefixKey);
-            T t = stringToBean(value,clazz);
+            T t = stringToBean(value, clazz);
             return t;
         } finally {
             jedis.close();
@@ -148,6 +170,42 @@ public class RedisService {
             //生成prefixKey
             String prefixKey = keyPrefix.getPrefix() + key;
             return jedis.exists(prefixKey);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 增加一个值
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
+    public Long incr(KeyPrefix keyPrefix,String key){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成prefixKey
+            String prefixKey = keyPrefix.getPrefix() + key;
+            return jedis.incr(prefixKey);
+        } finally {
+            jedis.close();
+        }
+    }
+
+    /**
+     * 减少一个值
+     * @param keyPrefix
+     * @param key
+     * @return
+     */
+    public Long decr(KeyPrefix keyPrefix,String key){
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成prefixKey
+            String prefixKey = keyPrefix.getPrefix() + key;
+            return jedis.decr(prefixKey);
         } finally {
             jedis.close();
         }

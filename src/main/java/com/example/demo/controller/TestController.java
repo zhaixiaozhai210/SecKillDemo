@@ -44,20 +44,34 @@ public class TestController {
 
     @GetMapping("/redis-set-test")
     public Result<String> redisSetTest() {
-        boolean b = redisService.set("hello","world");
+        boolean b = redisService.set("hello", "world");
         String s = redisService.get("hello", String.class);
         return Result.success(s);
     }
 
     @GetMapping("/redis-set-test2")
     public Result<User> redisSetTest2() {
-        User user   =new User();
+        User user = new User();
         user.setId(1410080408);
         user.setUserName("user0");
         user.setPassword("ae2fe40a6242ef07a35a30da2232e10a");
         user.setPhone("18077200000");
-        boolean b = redisService.set(UserPrefix.getById,"1",user);
-        User result = redisService.get(UserPrefix.getById,"1", User.class);
+        boolean b = redisService.set(UserPrefix.getById, "1", user);
+        User result = redisService.get(UserPrefix.getById, "1", User.class);
+        return Result.success(result);
+    }
+
+    @GetMapping("/redis-set-test3")
+    public Result<User> redisSetTest3(String userId, String key) {
+        User user = new User();
+        user.setId(1410080409);
+        user.setUserName("user1");
+        user.setPassword("ae2fe40a6242ef07a35a30da2232e10b");
+        user.setPhone("18077200001");
+
+        UserPrefix userPrefix = UserPrefix.setUserPrefix(userId);
+        boolean b = redisService.set(userPrefix, key, user);
+        User result = redisService.get(userPrefix, key, User.class);
         return Result.success(result);
     }
 }

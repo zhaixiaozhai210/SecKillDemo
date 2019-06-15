@@ -9,4 +9,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserDao {
     @Select("select * from user where id = #{id}")
     public User getUser(@Param("id") int id);
+
+    @Select("select * from user where phone = #{phone}")
+    User getUserByPhone(@Param("phone") String phone);
 }

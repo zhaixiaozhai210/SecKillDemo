@@ -2,6 +2,9 @@ package com.example.demo.redis;
 
 public abstract class BasePrefix implements KeyPrefix {
 
+    /**
+     * 过期时间 0：永不过期
+     */
     private int expireSeconds;
 
     private String userPrefix;

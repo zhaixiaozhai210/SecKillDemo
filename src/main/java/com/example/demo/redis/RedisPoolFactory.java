@@ -14,6 +14,9 @@ import redis.clients.jedis.JedisPoolConfig;
 @Service
 public class RedisPoolFactory {
 
+    /**
+     * application.yml 映射的对象
+     */
     @Autowired
     RedisConfig redisConfig;
 
